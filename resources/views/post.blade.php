@@ -14,14 +14,14 @@
         <input type="file" id="image" name="image" class="form-control-file mb-2 image" id="form-group">
       </div>
       {{-- フォーム追加 --}}
-      <button class="add btn btn-primary" id="add">+</button>
+      <button class="add btn btn-primary mr-1" id="add">+</button>
       <button class="del btn btn-primary" id="del">-</button>
       {{-- 文章 --}}
       <div class="form-group">
-        <textarea id="tweet" name="tweet" cols="30" rows="10" class="form-group"></textarea>
+        <textarea id="tweet" name="tweet" cols="50" rows="10" class="form-group mt-3"></textarea>
       </div>
       {{-- 送信 --}}
-      <button type="submit" class="exe btn btn-primary">Up Road</button>
+      <button type="submit" class="btn btn-primary">Up Road</button>
     </form>
 
     {{-- バリデーションメッセージ --}}
