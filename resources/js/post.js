@@ -19,7 +19,7 @@ $(document).on("click", ".add", function add(event) {
   let input = document.creatElement("input");
   input.setAttribute('type', 'file');
   input.setAttribute('name', 'image');
-  input.setAttribute('class', 'form-control-file image');
+  input.setAttribute('class', 'form-control-file image added');
   input.setAttribute('id', images.id);
   input.appendChild(input);
 
