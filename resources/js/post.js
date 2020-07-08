@@ -13,16 +13,24 @@ $(document).on("click", ".add", function add(event) {
   idNo++;
 
   // 追加
-  $(".parent").append("<input type='file' id='images.id' name='image' class='form-control-file image'>");
+  // $(".parent").append("<input type='file' id=images.id name='image' class='form-control-file image mb-2 added'>");
 
-  // 追加
-  // let input = document.creatElement("input");
-  // input.setAttribute("type", "file");
-  // input.setAttribute("name", "image");
-  // input.setAttribute("class", "form-control-file image");
-  // input.setAttribute("id", images.id);
-  // input.appendChild(input);
+  // 要素追加
+  let input = document.creatElement("input");
+  input.setAttribute('type', 'file');
+  input.setAttribute('name', 'image');
+  input.setAttribute('class', 'form-control-file image');
+  input.setAttribute('id', images.id);
+  input.appendChild(input);
+
+  // 追加された要素を数える
+  let count = $(".parent .added").length;
+  // 追加されたinputが2つ以上なら追加ボタン無効
+  if (count >= 2) {
+    $("#add").prop("disabled", true);
+  }
 });
+
 
 
 // 減らす
@@ -31,8 +39,12 @@ $(document).on("click", ".del", function del(event) {
     event.preventDefault();
 
     // 削除
-    
-    // 親要素ごと消してしまう
+    // 追加されたinputだけ消す
+    let parent = document.getElementsByClassName("parent");
+    let added = document.getElementsByClassName("added");
+    document.remove(added);
+
+    // 親要素ごと(フォーム丸ごと)消してしまう
     // var target = $(this).parent();
     // if (target.parent().children().length > 1) {
     //     target.remove();
