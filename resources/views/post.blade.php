@@ -7,11 +7,15 @@
     <h1>ShowYourBike - Post</h1>
 
     {{-- 投稿フォーム --}}
-    <form action="/index" method="post" enctype="multipart/form-data" class="form-controll">
+    <form action="/post" method="post" enctype="multipart/form-data" class="form-controll">
       @csrf
       {{-- 画像(最大3枚) --}}
-      <div class="form-group parent">
-        <input type="file" id="image" name="image" class="form-control-file mb-2 image" id="form-group">
+      <div id="parent" class="form-group">
+        <div>
+          <input type="file" name="image" class="form-control-file mb-2 image" onChange="imgPreview(event, 'preview')">
+          {{-- プレビュー親要素 --}}
+          <div id="preview"></div>
+        </div>
       </div>
       {{-- フォーム追加 --}}
       <button class="add btn btn-primary mr-2" id="add">+</button>
@@ -38,4 +42,26 @@
     <button class="mt-4" onclick="location.href='./index'">投稿一覧</button>
 
   </div>
+
+  <script>
+    // プレビュー
+    function imgPreview(event, id) {
+      let file = event.target.files[0];
+      let reader = new FileReader();
+      let preview = document.getElementById(id);
+
+      // すでにプレビューがある場合
+      if (preview.lastElementChild) {
+        // 削除
+        preview.lastElementChild.remove();
+      }
+    
+      reader.onload = function(event) {
+        let img = document.createElement("img");
+        img.setAttribute("src", reader.result);
+        preview.appendChild(img);
+      };
+      reader.readAsDataURL(file);
+};
+  </script>
 @endsection

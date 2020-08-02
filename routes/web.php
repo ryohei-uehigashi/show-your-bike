@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Validation\Validator;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,10 +21,17 @@ Route::get('/', function () {
 Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
-// Post
-Route::get('/post', 'PostController@post'); //ページ表示
-Route::post('/post', 'PostController@upload'); // 投稿内容保存
+Route::middleware(['auth'])->group(function() {
+    // Post
+    Route::get('/post', 'PostController@post'); //ページ表示
+    Route::post('/post', 'PostController@upload'); // 投稿内容保存
 
-// Index
-Route::get('/index', 'IndexController@index'); //ページ表示
-Route::post('/index', 'PostController@upload');
+    // Index
+    Route::get('/index', 'IndexController@index'); //ページ表示
+    Route::post('/index', 'PostController@upload');
+    // Follow
+    Route::post('/follow', 'FollowController@follow');
+    Route::post('/follow/delete', 'FollowController@delete');
+    // User
+    Route::get('/user/{id}', 'UserController@user');
+});

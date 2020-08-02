@@ -2,10 +2,11 @@
 
 @section('content')
 <div class="container">
-  <h1>ShowYourBike </h1>
-  <button class="mb-3" onclick="location.href='./post'">投稿する</button>
-<button class="mb-3" onclick="location.href='./user/{{Auth::id()}}'">MyPage</button>
-    @foreach($posts as $post)
+  <div>Follow:{{$follows}}</div>
+  <div>Follower:{{$followers}}</div>
+  <button class="mb-3" onclick="location.href='./user/{{Auth::id()}}'">MyPage</button>
+
+  @foreach($posts as $post)
       <div class="card mb-3" style="width:18rem;">
         <div class="row">
           <img class="col card-img-top" src="{{$post->image}}">
@@ -14,9 +15,9 @@
         </div>
         <div class="card-body">
           <div class="row">
-          <a href="/user/{{$post->user_id}}">{{$post->name}}</a>
+            <p class="mr-3">{{$post->name}}</p>
             {{-- 投稿者が自分のとき --}}
-            @if($post->id == $user_id)
+            @if($post->id == Auth::id())
               {{-- ボタン表示しない --}}
             {{-- フォローしている時 --}}
             @elseif ($post->is_followed)
@@ -38,6 +39,5 @@
         </div>
       </div>
     @endforeach
-
 </div>
 @endsection

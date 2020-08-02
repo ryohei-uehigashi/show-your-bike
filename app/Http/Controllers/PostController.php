@@ -28,18 +28,32 @@ class PostController extends Controller
       'image.required' => '画像が選択されていません'
     ]);
 
-    // if (request()->file) {
+    // 1枚目取得
       $image = $request->file('image');
-      // dd($image);
       $path = Storage::disk('s3')->putFile('myprefix', $image, 'public');
-
       $image = Storage::disk('s3')->url($path);
-    // }
+    
+    // 2枚取得
+      $image2 = $request->file('image2');
+      // dd($image2);
+    if ($image2) {
+      $path = Storage::disk('s3')->putFile('myprefix', $image2, 'public');
+      $image2 = Storage::disk('s3')->url($path);
+    }
+    // 3枚目取得
+    $image3 = $request->file('image3');
+    if ($image3) {
+      $path = Storage::disk('s3')->putFile('myprefix', $image3, 'public');
+      $image3 = Storage::disk('s3')->url($path);
+    }
+
     Post::create([
       'user_id' => Auth::id(),
       'date' => $request->date,
       'tweet' => $request->tweet,
       'image' => $image,
+      'image2' => $image2,
+      'image3' => $image3
     ]);
 
     return redirect('/index');

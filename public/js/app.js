@@ -37283,47 +37283,94 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-// 追加
+// 初回読み込み時にボタンの状態を変更
+changeButton(); // 追加
+
 $(document).on("click", ".add", function add(event) {
   // ボタンの送信機能を適用させない
-  event.preventDefault(); // 画像フォーム親、子要素の属性値取得
+  event.preventDefault(); // 画像フォームの親要素を取得
 
-  var parent = document.getElementsByClassName("parent");
-  var images = document.getElementsByClassName("image"); // id番号
+  var parent = document.getElementById("parent"); // 追加された要素を数える
 
-  var idNo = 2;
-  images.id = "image" + idNo;
-  idNo++; // 追加
-  // $(".parent").append("<input type='file' id=images.id name='image' class='form-control-file image mb-2 added'>");
-  // 要素追加
+  var count = parent.childElementCount; // 現在の要素の数＋1
 
-  var input = document.creatElement("input");
+  count++; // <input>追加、要素指定
+
+  var input = document.createElement("input");
   input.setAttribute('type', 'file');
-  input.setAttribute('name', 'image');
-  input.setAttribute('class', 'form-control-file image added');
-  input.setAttribute('id', images.id);
-  input.appendChild(input); // 追加された要素を数える
+  input.setAttribute('class', 'form-control-file image mb-2');
+  input.setAttribute('name', "image".concat(count));
+  input.setAttribute('onChange', "imgPreview(event, 'preview".concat(count, "')")); // 親要素の末尾に<input>追加
 
-  var count = $(".parent .added").length; // 追加されたinputが2つ以上なら追加ボタン無効
+  parent.appendChild(input); // ボタンの有効、無効
 
-  if (count >= 2) {
-    $("#add").prop("disabled", true);
-  }
+  changeButton(); // プレビュー
+  // プレビュー用のdivタグ作成
+
+  var preview = document = document.createElement("div");
+  preview.setAttribute("id", "preview".concat(count)); // inputタグをプレビュータグまとめるdiv
+
+  var inputGroup = document.createElement("div"); //親要素の末尾にinputGroupタグ追加
+
+  parent.appendChild(inputGroup);
+  parent.lastChild.appendChild(input);
+  parent.lastChild.appendChild(preview);
 }); // 減らす
 
 $(document).on("click", ".del", function del(event) {
   // ボタンの送信機能を適用させない
-  event.preventDefault(); // 削除
-  // 追加されたinputだけ消す
+  event.preventDefault(); // 親要素取得
 
-  var parent = document.getElementsByClassName("parent");
-  var added = document.getElementsByClassName("added");
-  document.remove(added); // 親要素ごと(フォーム丸ごと)消してしまう
-  // var target = $(this).parent();
-  // if (target.parent().children().length > 1) {
-  //     target.remove();
-  // }
-});
+  var parent = document.getElementById("parent"); // 最後の要素を削除
+
+  var lastChild = parent.lastElementChild.remove(); // 子要素の数を取得
+
+  var count = parent.childElementCount; // ボタンの有効、無効
+
+  changeButton();
+}); // 初回読み込み、追加、削除のボタンの有効、無効
+
+function changeButton() {
+  // 画像フォームの親要素取得
+  var parent = document.getElementById("parent"); // 画像フォームの数
+
+  var count = parent.childElementCount; // diasbled = false (ボタン有効)にする
+
+  $("#add").prop("disabled", false);
+  $("#del").prop("disabled", false); // inputが3つ以上の時,追加ボタンを無効にする
+
+  if (count >= 3) {
+    $("#add").prop("disabled", true);
+  } // inputが1つの時は、削除ボタンを無効
+
+
+  if (count == 1) {
+    $("#del").prop("disabled", true);
+  }
+} // プレビュー
+
+
+function imgPreview(event, id) {
+  var file = event.target.files[0];
+  var reader = new FileReader();
+  var preview = document.getElementById(id); // すでにプレビューがある場合
+
+  if (preview.lastElementChild) {
+    // 子要素削除
+    preview.lastElementChild.remove();
+  } // 子要素追加
+
+
+  reader.onload = function (event) {
+    var img = document.createElement("img");
+    img.setAttribute("src", reader.result);
+    preview.appendChild(img);
+  };
+
+  reader.readAsDataURL(file);
+}
+
+;
 
 /***/ }),
 
